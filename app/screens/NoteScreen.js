@@ -3,13 +3,15 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, StatusBar, TextInput} from 'react-native';
 import colors from '../colors/colors';
 import BtnIcon from '../components/BtnIcon';
+import SearchBar from '../components/SearchBar';
+import NoteInputModal from '../components/NoteInputModal';
 //import NoteInputModal from '../components/NoteInputModal';
 
 const NoteScreen = ({user}) => {
 
     // State permettant de stocher la salutation 
       const [greet, setGreet] = useState('');
-    
+      const [modalVisible, setModalVisible] = useState(false);
     // fonction permaetteant de determiner le moment de la journée
     const findGreet = () => {
         const hrs = new Date().getHours();
@@ -21,6 +23,11 @@ const NoteScreen = ({user}) => {
       useEffect(() => {
         findGreet();
       }, []);
+  
+
+    const handelOnSubmit = (title, desc) =>{
+        console.log(title, desc);
+    }
 
 
     return (
@@ -28,6 +35,7 @@ const NoteScreen = ({user}) => {
         <StatusBar barStyle={'dark-content'} backgroundColor={colors.bleuciel} /> 
         <View style={styles.container}>
              <Text style={styles.header}>{`Good ${greet} ${user.name}` }</Text>
+             <SearchBar containerStyle={{marginVertical: 15}}/>
            <View
               style={[
                 StyleSheet.absoluteFillObject,
@@ -35,15 +43,20 @@ const NoteScreen = ({user}) => {
               ]}
             >
               <Text style={styles.emptyHeader}>Add Notes</Text>
-              <BtnIcon onPress={() => console.log('click')} antIconName='plus' style={styles.addBtn}/>
+              <BtnIcon onPress={() => setModalVisible(true)} antIconName='plus'
+               style={styles.addBtn}/>
             </View>
         </View>
+        <NoteInputModal visible={modalVisible} onClose={() => setModalVisible(false)} 
+            onSubmit={handelOnSubmit}
+        />
         </>
     );
 };
 
 const styles = StyleSheet.create({
     header: {
+      fontFamily: 'Montserra',
       fontSize: 25,
       fontWeight: 'bold',
     },
@@ -53,12 +66,14 @@ const styles = StyleSheet.create({
       zIndex: 1,
     },
     emptyHeader: {
+      fontFamily: 'Montserra',
       fontSize: 30,
       textTransform: 'uppercase',
       fontWeight: 'bold',
       opacity: 0.2,
     },
     emptyHeaderContainer: {
+      fontFamily: 'Montserra',
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',

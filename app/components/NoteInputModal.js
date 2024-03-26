@@ -1,19 +1,62 @@
-import React from 'react';
-
-import { View, StyleSheet, Modal, StatusBar, TextInput } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, Modal, StatusBar, TextInput,Keyboard, TouchableWithoutFeedback } from 'react-native';
 import colors from '../colors/colors';
+import BtnIcon from './BtnIcon';
 // import BtnIcon from './BtnIcon';
 
-const NoteInputModal = ({visible}) => {
+const NoteInputModal = ({visible, onClose, onSubmit}) => {
+  
+  const [title, setTitle] = useState('');
+  const [desc, setDesc] = useState('');
+  const handleModalClose = () => {
+    Keyboard.dismiss();
+  };
+
+  const handleOnChangeText = (text, valueFor) => {
+    if (valueFor === 'title') setTitle(text);
+    if (valueFor === 'desc') setDesc(text);
+  };
+
+  const handleSubmit = () => {
+    if (!title.trim() && !desc.trim()) return onClose();
+
+ 
+      onSubmit(title, desc);
+      setTitle('');
+      setDesc('');
+      onClose();
+  };
+
+  const closeModal = () => {
+      setTitle('');
+      setDesc('');
+      onClose();
+  }
+
     return (
          <>
          <StatusBar hiden />
           <Modal visible={visible} animationType='fade'>
           <View style={styles.container}>
-             <TextInput style={[styles.input, styles.title]}/>
-             <TextInput style={[styles.input, styles.desriotion]}/>
-             
+            <TextInput value={title} onChangeText={text => handleOnChangeText(text, 'title')} placeholder='Title. . .'  style={[styles.input, styles.title]}/>
+            <TextInput value={desc} multiline placeholder='Description. . .'  style={[styles.input, styles.desc]}
+             onChangeText={text => handleOnChangeText(text, 'desc')}
+            /> 
+            <View style={styles.btnContainer}>
+              <BtnIcon size={12} antIconName='check'  onPress={handleSubmit}/>
+             { title.trim() || desc.trim() ? (
+              <BtnIcon size={12} style={{ marginLeft: 25 }}
+               antIconName='close'
+               onPress={closeModal}
+               /> ) : null 
+               
+             }
+            </View>
+            
           </View>
+          <TouchableWithoutFeedback onPress={handleModalClose}>
+             <View style={[styles.modalBG, StyleSheet.absoluteFillObject]} />
+          </TouchableWithoutFeedback>
         </Modal>  
            
         </>  
@@ -40,7 +83,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   desc: {
-    height: 100,
+    height:100,
+    fontWeight: 'bold',
   },
   modalBG: {
     flex: 1,

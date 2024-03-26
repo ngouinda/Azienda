@@ -6,7 +6,7 @@ import BtnIcon from '../components/BtnIcon';
 
 
 
-const Intro = () => {
+const Intro = ({onFinsih}) => {
     const [name, setName] = useState('');
     const handleOnChangeText = text => setName(text);
     // console.log(name)
@@ -14,6 +14,7 @@ const Intro = () => {
     const handleSubmit = async () =>{
         const user = { name:name }
         await AsyncStorage.setItem('user', JSON.stringify(user));
+        if(onFinsih) onFinsih();
     }
     return (
         <>

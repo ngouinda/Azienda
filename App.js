@@ -1,27 +1,32 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
+import { StyleSheet } from 'react-native';
 // import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // import { NavigationContainer } from '@react-navigation/native';
 // import DashScreen from './app/screens/DashScreen';
-import Home from './app/screens/Home'; 
+import Intro from "./app/screens/Intro";
 import NoteScreen from './app/screens/NoteScreen';
 
+export default function App() { 
+  const [user, setUser] = useState({})
+    const findUser = async () =>{
+    const result = await AsyncStorage.getItem('user')
+    setUser(JSON.parse(result))
+  };
 
-
-//const Stack = createNativeStackNavigator();
-
-const findUser = async () => {
-  const result = await AsyncStorage.getItem('user');
-
-  // if (result === null) return setIsAppFirstTimeOpen(true);
-
-  // setUser(JSON.parse(result));
-  // setIsAppFirstTimeOpen(false);
-};
-export default function App() {
-  useEffect(() => {
-    findUser();
-  }, [])
-
-  return <NoteScreen/>
+  useEffect (() => {
+     findUser()
+  }, []);
+  
+  return <NoteScreen user={user}/>;
     
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

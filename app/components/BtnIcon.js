@@ -1,19 +1,19 @@
 import React from 'react';
-import {View, Text, StyleSheet }  from "react-native";
+import { StyleSheet }  from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import colors from '../colors/colors';
 
 
 
 
-const BtnIcon = ({antIconName, size, color, style}) => {
+const BtnIcon = ({antIconName, size, color, style, onPress}) => {
     return (
             <AntDesign 
             name={antIconName} 
             size={size || 24} 
             color={color || colors.bleuciel }
             style={[styles.icon, {...style}]}
-            onPress={onpress}
+            onPress={onPress}
             />
             
             

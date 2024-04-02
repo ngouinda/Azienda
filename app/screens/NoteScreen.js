@@ -10,7 +10,7 @@ import Note from '../components/Note';
 
 
 
-const NoteScreen = ({user}) => {
+const NoteScreen = ({ user,  navigation }) => {
 
     // State permettant de stocher la salutation 
       const [greet, setGreet] = useState('');
@@ -45,6 +45,9 @@ const NoteScreen = ({user}) => {
         await AsyncStorage.setItem('notes', JSON.stringify (updatedNotes))
     }
 
+    const openNote = (note) => {
+      navigation.navigate("NoteDetail", { note });
+    }
 
     return (
         <>
@@ -55,7 +58,7 @@ const NoteScreen = ({user}) => {
              {notes.length ? <SearchBar containerStyle={{marginVertical: 15}}/> : null}
     
              <FlatList data={notes} columnWrapperStyle={{justifyContent:'space-between', marginBottom: 18}} numColumns={2} keyExtractor={item => item.id.toString()
-            } renderItem={({item}) => <Note item={item} />}/>
+            } renderItem={({item}) => <Note onPress={() => openNote(item)} item={item} />}/>
             {!notes.length ? <View
               style={[
                 StyleSheet.absoluteFillObject,

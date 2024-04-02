@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Modal, StatusBar, TextInput,Keyboard, TouchableWithoutFeedback } from 'react-native';
 import colors from '../colors/colors';
 import BtnIcon from './BtnIcon';
-// import BtnIcon from './BtnIcon';
+
 
 const NoteInputModal = ({visible, onClose, onSubmit}) => {
   

@@ -1,8 +1,11 @@
-import { ScrollView, Text, StyleSheet, View, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ScrollView, Text, StyleSheet, View, Alert} from 'react-native';
 
 import React from 'react'
 import colors from '../colors/colors';
 import BtnIcon from './BtnIcon';
+import { useNotes } from './contexts/NoteProvider';
+
 
 
 // function to format time in H:MM AM/PM
@@ -21,26 +24,36 @@ const foramtDate = ms => {
 //////////////////////////////////////////////////
  const  NoteDetail = props => {
   const { note} = props.route.params;
+  const {setNotes} = useNotes()
 
+   // Function that handle the delete of a note
+  const deleteNote = async ()=>{
+    const result = await AsyncStorage.getItem('notes')
+    let notes = [];
+    if (result !== null) notes = JSON.parse(result);
+
+    const newNotes = notes.filter(n => n.id !== note.id);
+    setNotes(newNotes)
+    await AsyncStorage.setItem('notes', JSON.stringify(newNotes));
+    props.navigation.goBack();
+  }
   
   const displayDeleteAlert = () => {
-    Alert.alert(
-      'Are You Sure!',
-      'This action will delete your note permanently!',
-      [
-        {
-          text: 'Delete',
-          onPress: () => console.log('delet note'),
-        },
-        {
-          text: 'No Thanks',
-          onPress: () => console.log('no thanks'),
-        },
-      ],
-      {
-        cancelable: true,
-      }
-    );
+    console.log("delete")
+    //alert('Are you sure?', 'your  note will be deleted')
+      
+    Alert.alert('Are you sure?', 'your  note will be deleted',
+    [
+      { text: "Cancel", 
+      onPress: deleteNote(), 
+    },
+    {
+      text: "No ",
+      onPress: () => console.log('no thank you')
+    }
+    ],{
+      cancelable:true,
+    } );
   };
 
   
@@ -56,9 +69,11 @@ const foramtDate = ms => {
         <BtnIcon
           antIconName='delete'
           style={{ backgroundColor: colors.rouge, marginBottom: 15 }}
-          onPress={displayDeleteAlert}
+          onPress={() => displayDeleteAlert()}
         />
-        <BtnIcon antIconName='edit'  onPress={() => console.log("edit")}/>
+        <BtnIcon antIconName='edit'
+          style={{ backgroundColor: colors.vertfonce}}
+          onPress={() => console.log("edit")}/>
       </View>
   </>
   );

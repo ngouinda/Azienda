@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 
 import { View, Text, StyleSheet, StatusBar, Keyboard, TouchableWithoutFeedback, FlatList} from 'react-native';
 import colors from '../colors/colors';
@@ -7,6 +7,8 @@ import BtnIcon from '../components/BtnIcon';
 import SearchBar from '../components/SearchBar';
 import NoteInputModal from '../components/NoteInputModal';
 import Note from '../components/Note';
+import { useNotes } from '../components/contexts/NoteProvider';
+
 
 
 
@@ -15,8 +17,8 @@ const NoteScreen = ({ user,  navigation }) => {
     // State permettant de stocher la salutation 
       const [greet, setGreet] = useState('');
       const [modalVisible, setModalVisible] = useState(false);
-
-      const [notes, setNotes] = useState([]);
+      const {notes, setNotes} = useNotes()
+      
     // fonction permaetteant de determiner le moment de la journée
     const findGreet = () => {
         const hrs = new Date().getHours();
@@ -24,17 +26,13 @@ const NoteScreen = ({ user,  navigation }) => {
         if (hrs === 1 || hrs < 17) return setGreet('Afternoon');
         setGreet('Evening');
       };  
-
-     const findNotes = async () =>{
-        const result = await AsyncStorage.getItem('notes');
-
-        if(result !== null) setNotes(JSON.parse(result));
-    }
-
+  
+  
     // Utilisation de useEffect pour exécuter findGreet une seule fois après le rendu initial
-      useEffect(() => {
-        findNotes();
-        findGreet();
+  
+     useEffect(() => {
+      
+      findGreet();
       }, []);
   
 

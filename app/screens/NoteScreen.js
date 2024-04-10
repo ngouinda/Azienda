@@ -17,6 +17,7 @@ const NoteScreen = ({ user,  navigation }) => {
     // State permettant de stocher la salutation 
       const [greet, setGreet] = useState('');
       const [modalVisible, setModalVisible] = useState(false);
+      const [searchQuery, setSearchQuery ] = useState("");
       const {notes, setNotes} = useNotes()
       
     // fonction permaetteant de determiner le moment de la journée
@@ -47,13 +48,29 @@ const NoteScreen = ({ user,  navigation }) => {
       navigation.navigate("NoteDetail", { note });
     }
 
+    const handelOnSearchInput= (text) =>{
+      setSearchQuery(text);
+      const filteredNotes = notes.filter(note => {
+        if(note.title.toLowerCase().includes(text.toLowerCase())) {
+          return note 
+        }
+      })
+
+      if(filteredNotes.length){
+        setNotes([...filteredNotes])
+      }
+    }
+
     return (
         <>
         <StatusBar barStyle={'dark-content'} backgroundColor={colors.bleuciel} /> 
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
              <Text style={styles.header}>{`Good ${greet} ${user.name}` }</Text>
-             {notes.length ? <SearchBar containerStyle={{marginVertical: 15}}/> : null}
+             {notes.length ? (
+             <SearchBar value={searchQuery} 
+             onChangeText={handelOnSearchInput}
+             containerStyle={{marginVertical: 15}}/> ): null}
     
              <FlatList data={notes} columnWrapperStyle={{justifyContent:'space-between', marginBottom: 18}} numColumns={2} keyExtractor={item => item.id.toString()
             } renderItem={({item}) => <Note onPress={() => openNote(item)} item={item} />}/>

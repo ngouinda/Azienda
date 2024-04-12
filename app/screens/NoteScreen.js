@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect} from 'react';
+import { useFonts, Montserrat} from '@expo-google-fonts/montserrat';
 
 import { View, Text, StyleSheet, StatusBar, Keyboard, TouchableWithoutFeedback, FlatList} from 'react-native';
 import colors from '../colors/colors';
@@ -13,6 +14,14 @@ import { useNotes } from '../components/contexts/NoteProvider';
 
 
 const NoteScreen = ({ user,  navigation }) => {
+  
+   let [fontsLoaded] = useFonts({
+    Montserrat,
+
+   });
+   if (!fontsLoaded){
+    return null;
+   }
 
     // State permettant de stocher la salutation 
       const [greet, setGreet] = useState('');
@@ -96,7 +105,7 @@ const NoteScreen = ({ user,  navigation }) => {
 
 const styles = StyleSheet.create({
     header: {
-      fontFamily: 'Montserra',
+      fontFamily: 'Montserrat',
       fontSize: 25,
       fontWeight: 'bold',
     },
@@ -106,14 +115,14 @@ const styles = StyleSheet.create({
       zIndex: 1,
     },
     emptyHeader: {
-      fontFamily: 'Montserra',
+      fontFamily: 'Montserrat',
       fontSize: 30,
       textTransform: 'uppercase',
       fontWeight: 'bold',
       opacity: 0.2,
     },
     emptyHeaderContainer: {
-      fontFamily: 'Montserra',
+      fontFamily: 'Montserrat',
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',

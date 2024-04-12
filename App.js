@@ -39,7 +39,7 @@ export default function App() {
 
   return( <NavigationContainer>
     <NoteProvider>
-      <Stack.Navigator  screenOptions={{ headerTitle: '', headerTransparent: true }}>
+      <Stack.Navigator  screenOptions={{ headerTitle: '', headerTransparent: false }}>
            <Stack.Screen component={renderNoteScreen} name="NoteScreen"  />
            <Stack.Screen component={NoteDetail} name="NoteDetail"  />
       </Stack.Navigator>

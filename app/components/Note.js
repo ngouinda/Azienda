@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   title: {
-    fontFamily: 'Montserra',
+    fontFamily: 'Montserrat',
     fontWeight: 'bold',
     fontSize: 16,
     color: colors.vertfonce,

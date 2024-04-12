@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   inputTitle: {
-    fontFamily: 'Montserra',
+    fontFamily: 'Montserrat',
     alignSelf: 'flex-start',
     paddingLeft: 25,
     marginBottom: 5,
